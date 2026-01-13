@@ -1,4 +1,4 @@
-# Sistema de Monitoreo y Alerta Temprana
+# Sistema de Inventarios y Ventas con RFID
 ## Instalación
 
 Para crear la base de datos:
