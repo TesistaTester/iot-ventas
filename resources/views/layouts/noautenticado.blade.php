@@ -13,7 +13,7 @@
 	<link rel="stylesheet" type="text/css" href="{{secure_url('css/font-awesome.min.css')}}">
 	<style>
         body{
-          background-image: secure_url('{{secure_asset('img/bg_login.png')}}');
+          background-image: url('{{secure_asset('img/bg_login.png')}}');
           background-position: center center;
           background-repeat: no-repeat;
           background-attachment: fixed;
