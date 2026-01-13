@@ -13,7 +13,7 @@
 							<img style="width:90%; margin:auto;" src="{{secure_asset('img/logo_agua.png')}}">
 						</div>
 						<h2 class="text-white font-weight-bold">INICIAR SESIÓN</h2>
-						<form action="{{url('auth/')}}" method="POST" autocomplete="off">
+						<form action="{{secure_url('auth/')}}" method="POST" autocomplete="off">
                           @csrf
                           <input style="display:none">
                           <input type="text" style="display:none">

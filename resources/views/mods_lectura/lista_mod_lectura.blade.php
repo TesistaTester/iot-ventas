@@ -114,7 +114,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
-          <form id="form-eliminar-modulo" action="{{url('modulos-lectura')}}" data-simple-action="{{url('modulos-lectura')}}" method="post">
+          <form id="form-eliminar-modulo" action="{{secure_url('modulos-lectura')}}" data-simple-action="{{secure_url('modulos-lectura')}}" method="post">
             @method('delete')
             @csrf
                 <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Si, eliminar</button>

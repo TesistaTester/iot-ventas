@@ -17,7 +17,7 @@
 					<div class="row no-gutters">
 						<div class="col-md-12">
 							<div class="card-body">
-								<form id="form-nuevo-usuario" action="{{url('usuarios/'.Crypt::encryptString($usuario->usu_id))}}" method="POST">
+								<form id="form-nuevo-usuario" action="{{secure_url('usuarios/'.Crypt::encryptString($usuario->usu_id))}}" method="POST">
 									@method('PUT')
 									@csrf
 								  <section id="seccion-datos-cuenta-usuario">
