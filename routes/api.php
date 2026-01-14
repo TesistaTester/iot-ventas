@@ -25,3 +25,8 @@ Route::get('/inventario/existe_tag_sin_asignar', [InventarioController::class ,'
 Route::post('/inventario/lectura_entrega', [InventarioController::class ,'lectura_pos']);
 Route::post('/inventario/lectura_almacen', [InventarioController::class ,'lectura_almacen']);
 Route::get('/inventario/lectura_almacen', [InventarioController::class ,'lectura_almacen2']);
+
+//prueba de ruta api directa
+Route::get('/railway-test-direct', function () {
+    return response()->json(['ok' => true, 'msg' => 'direct api works']);
+});
