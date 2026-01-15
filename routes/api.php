@@ -22,8 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/inventario/existe_tag_asignado', [InventarioController::class ,'existeTagAsignado']);
 Route::post('/inventario/procesar_tag_sin_asignar', [InventarioController::class ,'procesarTagSinAsignar']);
 Route::get('/inventario/existe_tag_sin_asignar', [InventarioController::class ,'existeTagSinAsignar']);
-Route::post('/inventario/lectura_entrega', [InventarioController::class ,'lectura_pos']);
+Route::post('/inventario/lectura_entrega', [InventarioController::class ,'lectura_entrega']);
 Route::post('/inventario/lectura_almacen', [InventarioController::class ,'lectura_almacen']);
+Route::post('/inventario/lectura_almacen_qr', [InventarioController::class ,'lectura_almacen_qr']);
 Route::get('/inventario/lectura_almacen', [InventarioController::class ,'lectura_almacen2']);
 
 //prueba de ruta api directa

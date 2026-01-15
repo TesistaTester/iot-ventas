@@ -116,5 +116,9 @@ Route::resource('/usuarios', UsuarioController::class);
 * RUTAS: REPORTES
 ----------------------------------------
 */
+Route::get('/reportes/stock_critico', [ReporteController::class ,'stockCritico']);
+Route::get('/reportes/ventas_mensual', [ReporteController::class ,'ventasMensual']);
+Route::get('/reportes/inventario_log', [ReporteController::class ,'inventarioLog']);
+Route::get('/reportes/inventario_actual', [ReporteController::class ,'inventarioActual']);
 Route::resource('/reportes', ReporteController::class);
 

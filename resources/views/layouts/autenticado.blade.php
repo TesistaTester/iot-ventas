@@ -6,26 +6,26 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('titulo') - {{env('APP_NAME')}}</title>
     {{-- HOJAS DE ESTILO --}}
-    <link rel="shortcut icon" href="{{secure_url('img/favicon.ico')}}" type="image/x-icon">
-	<link rel="icon" href="{{secure_url('img/favicon.ico')}}" type="image/x-icon">
-	<link rel="stylesheet" type="text/css" href="{{secure_url('css/bootstrap.min.css')}}">
-	<link rel="stylesheet" type="text/css" href="{{secure_url('css/int.styles.css')}}">
-	<link rel="stylesheet" type="text/css" href="{{secure_url('css/font-awesome.min.css')}}">
-	<link rel="stylesheet" type="text/css" href="{{secure_url('css/datatables.min.css')}}">
-	<link rel="stylesheet" type="text/css" href="{{secure_url('css/bootstrap-multiselect.min.css')}}">
-	<link rel="stylesheet" type="text/css" href="{{secure_url('css/select2.min.css')}}">
+    <link rel="shortcut icon" href="{{url('img/favicon.ico')}}" type="image/x-icon">
+	<link rel="icon" href="{{url('img/favicon.ico')}}" type="image/x-icon">
+	<link rel="stylesheet" type="text/css" href="{{url('css/bootstrap.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url('css/int.styles.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url('css/font-awesome.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url('css/datatables.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url('css/bootstrap-multiselect.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url('css/select2.min.css')}}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin=""/>
 
     {{--   JS PARA TODO EL PROYECTO   --}}
-    <script src="{{secure_url('js/jquery36.min.js')}}"></script>
-    <script src="{{secure_url('js/popper.min.js')}}"></script>
-    <script src="{{secure_url('js/bootstrap.min.js')}}"></script>
-    <script src="{{secure_url('js/datatables.min.js')}}"></script>
-    <script src="{{secure_url('js/bootstrap-multiselect.min.js')}}"></script>
-    <script src="{{secure_url('js/select2.min.js')}}"></script>
-    <script src="{{secure_url('js/chart.min.js')}}"></script>
+    <script src="{{url('js/jquery36.min.js')}}"></script>
+    <script src="{{url('js/popper.min.js')}}"></script>
+    <script src="{{url('js/bootstrap.min.js')}}"></script>
+    <script src="{{url('js/datatables.min.js')}}"></script>
+    <script src="{{url('js/bootstrap-multiselect.min.js')}}"></script>
+    <script src="{{url('js/select2.min.js')}}"></script>
+    <script src="{{url('js/chart.min.js')}}"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
@@ -42,7 +42,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
                     <a class="navbar-brand navbar-brand-centered" href="#">
-                        <img style="height:55px;" src="{{ secure_asset('img/logo_agua.png')}}" alt="..." class="">
+                        <img style="height:55px;" src="{{ asset('img/logo_agua.png')}}" alt="..." class="">
                     </a>
                     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                         <li class="nav-item active">
@@ -67,8 +67,15 @@
                                         <small class="text-uppercase text-info" style="font-size:0.6em;">
                                             @if (Auth::user()->usu_rol == 1)
                                             ADMINISTRADOR DE SISTEMA
-                                            @else
-                                            MONITOREO    
+                                            @endif
+                                            @if (Auth::user()->usu_rol == 2)
+                                            ENCARGADO DE ALMACEN
+                                            @endif
+                                            @if (Auth::user()->usu_rol == 3)
+                                            ENCARGADO DE VENTAS
+                                            @endif
+                                            @if (Auth::user()->usu_rol == 4)
+                                            GERENCIA
                                             @endif
                                         </small>
                                     </h4>
@@ -93,20 +100,22 @@
             <div class="nav-contextual">
                     <nav class="nav nav-pills" aria-orientation="vertical">
                         <a class="nav-item nav-link @if($modulo_activo == 'dashboard'): active @endif" href="{{url('dashboard')}}"><i class="fa fa-home"></i> PANEL GENERAL</a>
-                        @if (true)
-                        {{-- @if (Auth::user()->usu_rol == 1) --}}
+                        @if (Auth::user()->usu_rol == 1 || Auth::user()->usu_rol == 3)
                         <h6 class="text-center text-white" style="text-transform: uppercase;">
-                            <small>- VENTAS Y DESPACHO -</small>
+                            <small>- VENTAS -</small>
                         </h6>                        
                         <a class="nav-item nav-link @if($modulo_activo == 'ventas'): active @endif" href="{{url('ventas')}}"><i class="fa fa-dollar"></i> VENTAS</a>
                         <a class="nav-item nav-link @if($modulo_activo == 'clientes'): active @endif" href="{{url('clientes')}}"><i class="fa fa-suitcase"></i> CLIENTES</a>
                         @endif
+                        @if (Auth::user()->usu_rol == 1 || Auth::user()->usu_rol == 2)
                         <h6 class="text-center text-white" style="text-transform: uppercase;">
                             <small>- ALMACEN-</small>
                         </h6>                        
                         <a class="nav-item nav-link @if($modulo_activo == 'inventario'): active @endif" href="{{url('inventario')}}"><i class="fa fa-th-list "></i> INVENTARIO</a>
                         <a class="nav-item nav-link @if($modulo_activo == 'proveedores'): active @endif" href="{{url('proveedores')}}"><i class="fa fa-share-alt"></i> PROVEEDORES</a>
                         <a class="nav-item nav-link @if($modulo_activo == 'productos'): active @endif" href="{{url('productos')}}"><i class="fa fa-th"></i> PRODUCTOS</a>
+                        @endif
+                        @if (Auth::user()->usu_rol == 1 || Auth::user()->usu_rol == 4)
                         <h6 class="text-center text-white" style="text-transform: uppercase;">
                             <small>- ADMINISTRACIÓN-</small>
                         </h6>                        
@@ -114,6 +123,7 @@
                         <a class="nav-item nav-link @if($modulo_activo == 'usuarios'): active @endif" href="{{url('usuarios')}}"><i class="fa fa-users"></i> USUARIOS</a>
                         <a class="nav-item nav-link @if($modulo_activo == 'reportes'): active @endif" href="{{url('reportes')}}"><i class="fa fa-line-chart"></i> REPORTES</a>
                         {{-- <a class="nav-item nav-link @if($modulo_activo == 'alertas'): active @endif" href="{{url('configuracion')}}"><i class="fa fa-cogs"></i> CONFIGURACION</a> --}}
+                        @endif
                     </nav>
     
                 <div class="box-copyright">

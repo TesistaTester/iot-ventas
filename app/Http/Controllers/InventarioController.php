@@ -10,6 +10,8 @@ use App\Models\InventarioLog;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 // use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Models\DetalleVenta;
+use App\Models\Venta;
 
 class InventarioController extends Controller
 {
@@ -170,39 +172,77 @@ class InventarioController extends Controller
         return response('----> LECTURA PROCESASA DESDE LARAVEL Uid:'.$uid.' Evento: '.$evento);
     }
 
+    public function lectura_almacen_qr(Request $request){
+        $codigo = $request->input('codigo');
+        $evento = $request->input('evento');
+        //obtenemos el tag con uid capturado
+        $tag = ProductoTagRFID::where('ptr_codigo', $codigo)->first();
+        //obtenemos el producto cuyo tag corresponde
+        $producto = Producto::find($tag->pro_id);
+        //registramos el movimiento en inventarioLog
+        $movimiento = new InventarioLog();
+        $movimiento->pro_id = $producto->pro_id;
+        $movimiento->ilo_tipo_movimiento = $evento; // entrada/salida
+        $movimiento->ilo_cantidad = 1; // Una máquina por tag
+        $movimiento->ilo_fuente = 'qr';
+        $movimiento->ilo_descripcion = "Movimiento manual por QR";
+        $movimiento->save();
+
+        //Actualizamos inventario
+        $inventario = Inventario::where('pro_id', $producto->pro_id)->first();
+        if ($evento === 'entrada') {
+            $inventario->inv_cantidad += 1;
+        } else {
+            $inventario->inv_cantidad -= 1;
+        }
+        $inventario->save();
+
+        // return response()->json(array('status'=>'1', 'lecturas'=>'Saludo a esp32'));
+        return response('LECTURA PROCESASA QR-Codigo:'.$codigo.' Evento: '.$evento);
+    }
+
+
+
     public function lectura_pos(Request $request){
         $uid = $request->input('uid');
         $evento = $request->input('evento');
         return response()->json(array('status'=>'1', 'uid'=>$uid, 'tipo'=> $evento));
     }
 
-    // public function lectura_entrega(Request $request){
-    //     $uid = $request->input('uid');
-    //     $evento = $request->input('evento');
+    public function lectura_entrega(Request $request){
+        $uid = $request->input('uid');
+        $evento = $request->input('evento');
 
-    //     //obtenemos el tag con uid capturado
-    //     $tag = ProductoTagRFID::where('ptr_uid', $request->uid)->first();
-    //     //obtenemos el producto cuyo tag corresponde
-    //     $producto = Producto::find($tag->pro_id);
-    //     //obtenemos el detalle de producto en venta cuyo despacho este pendiente
-    //     $detalle = DetalleVenta::where('pro_id', $producto->pro_id)->where('dve_despachos', 0)->first();
-    //     $detalle->dve_despachados = $detalle->dve_despachados + 1;
-    //     $detalle->save();
-    //     //revisamos todos los despachos para cambiar el estado del pedido a despachado
-    //     $dets = DetalleVenta::where('pro_id', $producto->pro_id)->get();
-    //     $nro_dets = count($dets);
-    //     $nro_dets_despacho = 0;
-    //     foreach($dets as $item){
-    //         if($item->dve_cantidad == $item->dve_despachos){
-    //             $nro_dets_despacho += 1;
-    //         }
-    //     }
-    //     if($nro_dets == $nro_dets_despacho){
-    //         $venta = Venta::where('ven_id', $detalle->ven_id);
-    //     }
+        //obtenemos el tag con uid capturado
+        $tag = ProductoTagRFID::where('ptr_uid', $request->uid)->first();
+        //obtenemos el producto cuyo tag corresponde
+        $producto = Producto::find($tag->pro_id);
+        //obtenemos el detalle de producto en venta cuyo despacho este pendiente
+        $detalle = DetalleVenta::where('pro_id', $producto->pro_id)->where('dve_despachados', 0)->first();
+        if(!$detalle){
+            return response()->json(array('status'=>'0', 'mensaje'=>'El producto no tiene despachos pendientes'));
+        }else{
+            $detalle->dve_despachados = $detalle->dve_despachados + 1;
+            $detalle->save();
+            $venta = Venta::where('ven_id', $detalle->ven_id)->first();
+            $venta->ven_estado = 1; //1=Despachado
+            $venta->save();
+            // //revisamos todos los despachos para cambiar el estado del pedido a despachado
+            // $dets = DetalleVenta::where('pro_id', $producto->pro_id)->get();
+            // $nro_dets = count($dets);
+            // $nro_dets_despacho = 0;
+            // foreach($dets as $item){
+            //     if($item->dve_cantidad == $item->dve_despachos){
+            //         $nro_dets_despacho += 1;
+            //     }
+            // }
+            // if($nro_dets == $nro_dets_despacho){
+            //     $venta = Venta::where('ven_id', $detalle->ven_id);
+            // }
 
-    //     return response()->json(array('status'=>'1', 'uid'=>$uid, 'tipo'=> $evento));
-    // }
+            return response()->json(array('status'=>'1', 'uid'=>$uid, 'tipo'=> $evento));
+        }
+    }
 
     /**
      * Show the form for creating a new resource.

@@ -5,16 +5,17 @@
 
 <div class="col-md-10 content-pane">
     <h3 class="title-header" style="text-transform: uppercase;">
-        <i class="fa fa-share-alt"></i>
+        <i class="fa fa-line-chart"></i>
         {{$titulo}}
-        <a href="{{url('proveedores/nuevo')}}" class="btn btn-sm btn-success float-right" style="margin-left:10px;"><i class="fa fa-plus"></i> NUEVO proveedor</a>
+        <a href="#" id="btn-imprimir" class="btn btn-sm btn-primary float-right" style="margin-left:10px;"><i class="fa fa-print"></i> IMPRIMIR</a>
+        <a href="{{url('reportes/')}}" class="btn btn-sm btn-secondary float-right" style="margin-left:10px;"><i class="fa fa-arrow-left"></i> ATRAS</a>
     </h3>
     <div class="row">
         <div class="col-12">              
                 <!-- inicio card  -->
                 <div class="card card-stat">
                     <div class="card-body">
-                        @if($proveedores->count() == 0)
+                        @if($inventario->count() == 0)
                         <div class="alert alert-info">
                             <div class="media">
                                 <img src="{{asset('img/alert-info.png')}}" class="align-self-center mr-3" alt="...">
@@ -27,53 +28,54 @@
                             </div>
                         </div>
                         @else
-                        <table class="table table-bordered tabla-datos-clientes">
+                        <h4 class="text-info text-bold text-center">
+                            REPORTE: INVENTARIO ACTUAL
+                            <br>
+                            <small>Fecha: {{date('d/m/Y H:i:s')}}</small>
+                        </h4>
+                        <table class="table table-bordered tabla-datos">
                             <thead>
                             <tr>
-                                <th>PROVEEDOR</th>
-                                <th>NIT</th>
-                                <th>TELEFONO</th>
-                                <th>EMAIL</th>
-                                <th>DIRECCION</th>
-                                <th>OPCION</th>
+                                <th>ID PROD</th>
+                                <th>SKU</th>
+                                <th>PRODUCTO</th>
+                                <th>PRECIO VENTA</th>
+                                <th>PRECIO COMPRA</th>
+                                <th>STOCK</th>
+                                <th>STOCK CRITICO</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($proveedores as $item)
+                            @foreach($inventario as $item)
                             <tr>
                                 <td class="text-center">
-                                    {{$item->pve_nombre}}
+                                    {{$item->producto->pro_id}}
                                 </td>
                                 <td class="text-center">
-                                    {{$item->pve_nit}}
+                                    {{$item->producto->pro_sku}}
                                 </td>
                                 <td class="text-center">
-                                    {{$item->pve_telefono}}
+                                    {{$item->producto->pro_nombre}}
                                 </td>
                                 <td class="text-center">
-                                    {{$item->pve_email}}
+                                    {{$item->producto->pro_precio_venta}}
                                 </td>
                                 <td class="text-center">
-                                    {{$item->pve_direccion}}
+                                    {{$item->producto->pro_precio_compra}}
                                 </td>
-                                <td>
-                                    <div class="dropdown">
-                                       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        OPCION
-                                      </button>
-                                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="{{url('proveedores/'.Crypt::encryptString($item->pve_id).'/editar')}}"><i class="fa fa-edit"></i> Editar</a>
-                                        @if(count($item->productos) == 0)
-                                        <a class="dropdown-item btn-eliminar-proveedor" data-usu-id="{{Crypt::encryptString($item->pve_id)}}" data-usu-nombre="{{$item->pve_nombre}}" data-toggle="modal" data-target="#modal-eliminar-proveedor" href="#"><i class="fa fa-trash"></i> Eliminar</a>
-                                        @endif
-                                      </div>
-                                    </div>
+                                <td class="text-center">
+                                    {{$item->inv_cantidad}}
                                 </td>
+                                <td class="text-center">
+                                    {{$item->producto->pro_stock_minimo}}
+                                </td>
+
                             </tr>
                             @endforeach
                             </tbody>
                         </table>
                         @endif
+
                     </div>
                 </div>
                 <!-- fin card  -->
@@ -85,14 +87,14 @@
 </div>
 
 
-{{-- INICIO MODAL: ELIMINAR MODALIDAD --}}
-<div class="modal fade" id="modal-eliminar-proveedor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+{{-- INICIO MODAL: ELIMINAR  VENTA--}}
+<div class="modal fade" id="modal-eliminar-venta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header" style="background-color:#eee;">
           <h5 class="modal-title text-primary">
               <i class="fa fa-trash"></i>
-              Eliminar proveedor
+              Eliminar venta
             </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -101,7 +103,7 @@
         <div class="modal-body">
             <div class="box-data-xtra">
                 <h5>
-                    <span class="text-success">NOMBRE proveedor: </span>
+                    <span class="text-success">NOMBRE venta: </span>
                     <span id="txt-usu-nombre"></span><br>
                 </h5>
             </div>
@@ -119,7 +121,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
-          <form id="form-eliminar-proveedor" action="{{url('proveedores')}}" data-simple-action="{{url('proveedores')}}" method="post">
+          <form id="form-eliminar-venta" action="{{url('ventas')}}" data-simple-action="{{url('ventas')}}" method="post">
             @method('delete')
             @csrf
                 <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Si, eliminar</button>
@@ -128,7 +130,7 @@
       </div>
     </div>
   </div>
-  {{-- FIN MODAL: ELIMINAR ESTADO --}}
+  {{-- FIN MODAL: ELIMINAR VENTA --}}
 
 
 <script type="text/javascript">
@@ -138,24 +140,29 @@ $(function(){
     * CONFIGURACION DATA TABLES
     -------------------------------------------------------------
     */
-    $('.tabla-datos-clientes').DataTable({"language":{url: '{{asset('js/datatables-lang-es.json')}}'}, "order": [[ 5, "desc" ]]});
+    $('.tabla-datos').DataTable({"language":{url: '{{asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
 
     //Conf popover
     $('[data-toggle="popover"]').popover()
 
+    //boton para imprimir
+    $('#btn-imprimir').on('click', function () {
+        window.print();
+    });
+
     /*
     --------------------------------------------------------------
-    ELIMINAR proveedor
+    ELIMINAR venta
     --------------------------------------------------------------
     */
-    $('.btn-eliminar-proveedor').click(function(){
+    $('.btn-eliminar-venta').click(function(){
        let usu_id = $(this).attr('data-usu-id');
        let usu_nombre = $(this).attr('data-usu-nombre');
        $('#txt-usu-nombre').html(usu_nombre);
        //form data
-       action = $('#form-eliminar-proveedor').attr('data-simple-action');
+       action = $('#form-eliminar-venta').attr('data-simple-action');
        action = action+'/'+usu_id;
-       $('#form-eliminar-proveedor').attr('action',action);
+       $('#form-eliminar-venta').attr('action',action);
    });
 
 

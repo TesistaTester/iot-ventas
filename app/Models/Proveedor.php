@@ -15,6 +15,6 @@ class Proveedor extends Model
      */
     //productos que corresponden al proveedor
     public function productos(){
-        return $this->hasMany(Cliente::class, 'cli_id');
+        return $this->hasMany(Producto::class, 'pve_id');
     }
 }
