@@ -199,14 +199,14 @@ $(function(){
  const labelsDias = [
     //iteramos con blade la variable venta_7_dias
     @foreach ($ventas_7_dias as $venta)
-        '{{ $venta->dia }}',
+        '{{ $venta["dia"] }}',
     @endforeach
     
    ];
  const labelsMeses = [
     //iteramos con blade la variable venta_6_meses
     @foreach ($ventas_6_meses as $venta)
-        '{{ $venta->mes }}',
+        '{{ $venta["mes"] }}',
     @endforeach
    ];
    const data2 = {
@@ -217,7 +217,7 @@ $(function(){
        borderColor: 'rgb(5, 99, 132)',
        data: [
     @foreach ($ventas_6_meses as $venta)
-        '{{ $venta->total_ventas }}',
+        '{{ $venta["total_ventas"] }}',
     @endforeach
 
        ],
@@ -232,7 +232,7 @@ $(function(){
          borderColor: 'rgb(54, 162, 235)',
          data: [
      @foreach ($ventas_7_dias as $venta)
-          '{{ $venta->total_ventas }}',
+          '{{ $venta["total_ventas"] }}',
      @endforeach
          ],
       }]
@@ -241,7 +241,7 @@ $(function(){
    const data3 = {
      labels: [
         @foreach ($entradas_6_meses as $entrada)
-            '{{ $entrada->mes }}',   
+            '{{ $entrada["mes"] }}',   
         @endforeach
      ],
      datasets: [{
@@ -250,7 +250,7 @@ $(function(){
        borderColor: 'rgb(4, 189, 72)',
        data: [
         @foreach ($entradas_6_meses as $entrada)
-            '{{ $entrada->total_entradas }}',   
+            '{{ $entrada["total_entradas"] }}',   
         @endforeach
        ],
      }]
@@ -259,7 +259,7 @@ $(function(){
    const data4 = {
      labels: [
         @foreach ($salidas_6_meses as $salida)
-            '{{ $salida->mes }}',   
+            '{{ $salida["mes"] }}',   
         @endforeach
      ],
      datasets: [{
@@ -268,7 +268,7 @@ $(function(){
        borderColor: 'rgb(4, 189, 72)',
        data: [
         @foreach ($salidas_6_meses as $salida)
-            '{{ $salida->total_salidas }}',   
+            '{{ $salida["total_salidas"] }}',   
         @endforeach
        ],
      }]
