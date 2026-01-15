@@ -94,8 +94,11 @@ class DashboardController extends Controller
                 Carbon::now()->subDays(6)->startOfDay(),
                 Carbon::now()->endOfDay()
             ])
-            ->selectRaw('DATE(ven_fecha_venta) as fecha, SUM(ven_total) as total_ventas')
-            ->groupBy('fecha')
+            ->selectRaw("
+                DATE(ven_fecha_venta) as fecha,
+                SUM(CAST(ven_total AS NUMERIC)) as total_ventas
+            ")
+            ->groupByRaw('DATE(ven_fecha_venta)')
             ->orderBy('fecha')
             ->get()
             ->keyBy('fecha');
