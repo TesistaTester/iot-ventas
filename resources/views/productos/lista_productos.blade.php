@@ -71,7 +71,7 @@
                                       </button>
                                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="{{url('productos/'.Crypt::encryptString($item->pro_id).'/editar')}}"><i class="fa fa-edit"></i> Editar</a>
-                                        @if($item->inventario->inv_cantidad == 0 || $item->inventario->inv_cantidad == null || $item->inventario == null)
+                                        @if($item->inventario === null || $item->inventario->inv_cantidad == 0)
                                         <a class="dropdown-item btn-eliminar-producto" data-usu-id="{{Crypt::encryptString($item->pro_id)}}" data-usu-nombre="{{$item->pro_nombre}}" data-toggle="modal" data-target="#modal-eliminar-producto" href="#"><i class="fa fa-trash"></i> Eliminar</a>
                                         @endif
                                       </div>
