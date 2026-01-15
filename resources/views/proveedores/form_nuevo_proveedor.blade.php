@@ -17,7 +17,7 @@
 					<div class="row no-gutters">
 						<div class="col-md-12">
 							<div class="card-body">
-								<form id="form-nuevo-proveedor" action="{{url('proveedores')}}" method="POST">
+								<form id="form-nuevo-proveedor" action="{{secure_url('proveedores')}}" method="POST">
 								  @csrf
 								  <section id="seccion-datos-proveedor">
 									<h4 class="card-title"><strong><span class="text-primary">

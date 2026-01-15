@@ -17,7 +17,7 @@
 					<div class="row no-gutters">
 						<div class="col-md-12">
 							<div class="card-body">
-								<form id="form-nuevo-modulo-lectura" action="{{url('modulos-lectura')}}" method="POST">
+								<form id="form-nuevo-modulo-lectura" action="{{secure_url('modulos-lectura')}}" method="POST">
 								  @csrf
 								  <section id="seccion-datos-cuenta-modulo-lectura">
 									<h4 class="card-title"><strong><span class="text-primary">

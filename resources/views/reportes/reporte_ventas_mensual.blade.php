@@ -18,7 +18,7 @@
                         @if($ventas->count() == 0)
                         <div class="alert alert-info">
                             <div class="media">
-                                <img src="{{asset('img/alert-info.png')}}" class="align-self-center mr-3" alt="...">
+                                <img src="{{secure_asset('img/alert-info.png')}}" class="align-self-center mr-3" alt="...">
                                 <div class="media-body">
                                     <h5 class="mt-0">Nota.-</h5>
                                     <p>
@@ -81,7 +81,7 @@ $(function(){
     * CONFIGURACION DATA TABLES
     -------------------------------------------------------------
     */
-    $('.tabla-datos').DataTable({"language":{url: '{{asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
+    $('.tabla-datos').DataTable({"language":{url: '{{secure_asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
 
     //Conf popover
     $('[data-toggle="popover"]').popover()

@@ -18,7 +18,7 @@
                         @if($modulos->count() == 0)
                         <div class="alert alert-info">
                             <div class="media">
-                                <img src="{{asset('img/alert-info.png')}}" class="align-self-center mr-3" alt="...">
+                                <img src="{{secure_asset('img/alert-info.png')}}" class="align-self-center mr-3" alt="...">
                                 <div class="media-body">
                                     <h5 class="mt-0">Nota.-</h5>
                                     <p>
@@ -102,7 +102,7 @@
             </div>
             <div class="alert alert-danger">
                 <div class="media">
-                    <img src="{{asset('img/alert-danger.png')}}" class="align-self-center mr-3" alt="...">
+                    <img src="{{secure_asset('img/alert-danger.png')}}" class="align-self-center mr-3" alt="...">
                     <div class="media-body">
                         <h5 class="mt-0">Cuidado.-</h5>
                         <p>
@@ -114,7 +114,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
-          <form id="form-eliminar-modulo" action="{{url('modulos-lectura')}}" data-simple-action="{{url('modulos-lectura')}}" method="post">
+          <form id="form-eliminar-modulo" action="{{secure_url('modulos-lectura')}}" data-simple-action="{{secure_url('modulos-lectura')}}" method="post">
             @method('delete')
             @csrf
                 <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Si, eliminar</button>
@@ -133,7 +133,7 @@ $(function(){
     * CONFIGURACION DATA TABLES
     -------------------------------------------------------------
     */
-    $('.tabla-datos').DataTable({"language":{url: '{{asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
+    $('.tabla-datos').DataTable({"language":{url: '{{secure_asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
 
     //Conf popover
     $('[data-toggle="popover"]').popover()

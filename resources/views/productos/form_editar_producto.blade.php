@@ -17,7 +17,7 @@
 					<div class="row no-gutters">
 						<div class="col-md-12">
 							<div class="card-body">
-								<form id="form-nuevo-producto" action="{{url('productos/'.Crypt::encryptString($producto->pro_id))}}" method="POST">
+								<form id="form-nuevo-producto" action="{{secure_url('productos/'.Crypt::encryptString($producto->pro_id))}}" method="POST">
 								  @csrf
    								  @method('PUT')								  
 								  <section id="seccion-datos-cuenta-modulo-lectura">

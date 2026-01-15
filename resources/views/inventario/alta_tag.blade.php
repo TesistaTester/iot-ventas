@@ -40,7 +40,7 @@
                                             <div id="box-loader" class="box-scanner">
                                                 ESPERANDO ESCANEO RFID ...
                                                 <br><br>
-                                                <img src="{{ asset('img/preloader3.gif') }}" alt="">
+                                                <img src="{{ secure_asset('img/preloader3.gif') }}" alt="">
                                             </div>
                                             <hr>
                                             <div id="box-form">
@@ -93,8 +93,8 @@ $(function(){
     * CONFIGURACION DATA TABLES
     -------------------------------------------------------------
     */
-    $('.tabla-datos-clientes').DataTable({"language":{url: '{{asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "asc" ]]});
-    $('.tabla-datos-log').DataTable({"language":{url: '{{asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
+    $('.tabla-datos-clientes').DataTable({"language":{url: '{{secure_asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "asc" ]]});
+    $('.tabla-datos-log').DataTable({"language":{url: '{{secure_asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
 
     //Conf popover
     $('[data-toggle="popover"]').popover()

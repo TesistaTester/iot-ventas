@@ -17,7 +17,7 @@
 					<div class="row no-gutters">
 						<div class="col-md-12">
 							<div class="card-body">
-								<form id="form-nuevo-producto" action="{{url('ventas')}}" method="POST">
+								<form id="form-nuevo-producto" action="{{secure_url('ventas')}}" method="POST">
 								  @csrf
 								  <section id="seccion-datos-cuenta-modulo-lectura">
 									<div class="row">
@@ -295,7 +295,7 @@
 
 <script>
 $(function(){
-    $('.tabla-carrito').DataTable({"language":{url: '{{asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
+    $('.tabla-carrito').DataTable({"language":{url: '{{secure_asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
 
 	$('#btn-enviar-carrito').attr('disabled','disabled');
 
