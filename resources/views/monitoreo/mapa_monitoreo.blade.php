@@ -7,7 +7,7 @@
     <h3 class="title-header" style="text-transform: uppercase;">
         <i class="fa fa-line-chart"></i>
         {{$titulo}}
-        <a href="{{url('monitoreo')}}" class="btn btn-sm btn-secondary float-right" style="margin-left:10px;"><i class="fa fa-arrow-left"></i> Volver a lista</a>
+        <a href="{{secure_url('monitoreo')}}" class="btn btn-sm btn-secondary float-right" style="margin-left:10px;"><i class="fa fa-arrow-left"></i> Volver a lista</a>
     </h3>
     <div class="row">
         <div class="col-12">                                      

@@ -7,7 +7,7 @@
     <h3 class="title-header" style="text-transform: uppercase;">
         <i class="fa fa-id-card"></i>
         {{$titulo}}
-        <a href="{{url('monitoreo')}}" class="btn btn-sm btn-secondary float-right" style="margin-left:10px;"><i class="fa fa-arrow-left"></i> ATRÁS</a>
+        <a href="{{secure_url('monitoreo')}}" class="btn btn-sm btn-secondary float-right" style="margin-left:10px;"><i class="fa fa-arrow-left"></i> ATRÁS</a>
     </h3>
     <div class="row">
         <div class="col-12">
@@ -73,7 +73,7 @@
                                 @if($modulo->lecturas->count() == 0)
                                 <div class="alert alert-info">
                                     <div class="media">
-                                        <img src="{{asset('img/alert-info.png')}}" class="align-self-center mr-3" alt="...">
+                                        <img src="{{secure_asset('img/alert-info.png')}}" class="align-self-center mr-3" alt="...">
                                         <div class="media-body">
                                             <h5 class="mt-0">Nota.-</h5>
                                             <p>
@@ -134,9 +134,9 @@ $(function(){
     * CONFIGURACION DATA TABLES
     -------------------------------------------------------------
     */
-    $('.tabla-datos-caudales').DataTable({"language":{url: '{{asset('js/datatables-lang-es.json')}}'}, "pageLength": 5, "order": [[ 0, "desc" ]]});
-    $('.tabla-datos-lecturas').DataTable({"language":{url: '{{asset('js/datatables-lang-es.json')}}'}, "pageLength": 5, "order": [[ 0, "desc" ]]});
-    // $('.tabla-datos').DataTable({"language":{url: '{{asset('js/datatables-lang-es.json')}}'}, "order": [[ 5, "desc" ]]});
+    $('.tabla-datos-caudales').DataTable({"language":{url: '{{secure_asset('js/datatables-lang-es.json')}}'}, "pageLength": 5, "order": [[ 0, "desc" ]]});
+    $('.tabla-datos-lecturas').DataTable({"language":{url: '{{secure_asset('js/datatables-lang-es.json')}}'}, "pageLength": 5, "order": [[ 0, "desc" ]]});
+    // $('.tabla-datos').DataTable({"language":{url: '{{secure_asset('js/datatables-lang-es.json')}}'}, "order": [[ 5, "desc" ]]});
 
     //Conf popover
     $('[data-toggle="popover"]').popover()

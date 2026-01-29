@@ -59,198 +59,197 @@ class DashboardController extends Controller
 
         //obtener las entradas y salidas de inventario_log del mes actual
         //version postgres
-        // $inicio = Carbon::now()->startOfMonth();
-        // $fin    = Carbon::now()->endOfMonth();
+        $inicio = Carbon::now()->startOfMonth();
+        $fin    = Carbon::now()->endOfMonth();
 
-        // $salidas = InventarioLog::where('ilo_tipo_movimiento', 'salida')
-        //     ->whereBetween('created_at', [$inicio, $fin])
-        //     ->count();
-
-        // $entradas = InventarioLog::where('ilo_tipo_movimiento', 'entrada')
-        //     ->whereBetween('created_at', [$inicio, $fin])
-        //     ->count();
-        //version mysql (local)        
         $salidas = InventarioLog::where('ilo_tipo_movimiento', 'salida')
-                        ->whereMonth('created_at', $mes)
-                        ->whereYear('created_at', $anio)
-                        ->count();
-        //obtener la entradas de inventario_log del mes actual
+            ->whereBetween('created_at', [$inicio, $fin])
+            ->count();
+
         $entradas = InventarioLog::where('ilo_tipo_movimiento', 'entrada')
-                        ->whereMonth('created_at', $mes)
-                        ->whereYear('created_at', $anio)
-                        ->count();        
+            ->whereBetween('created_at', [$inicio, $fin])
+            ->count();
+        //version mysql (local)        
+        // $salidas = InventarioLog::where('ilo_tipo_movimiento', 'salida')
+        //                 ->whereMonth('created_at', $mes)
+        //                 ->whereYear('created_at', $anio)
+        //                 ->count();
+        // //obtener la entradas de inventario_log del mes actual
+        // $entradas = InventarioLog::where('ilo_tipo_movimiento', 'entrada')
+        //                 ->whereMonth('created_at', $mes)
+        //                 ->whereYear('created_at', $anio)
+        //                 ->count();        
         
         //ventas ultimos 6 meses (muestra el nombre del mes y el total de ventas)
         //version postgresql
-        // $ventas_ultimos_6_meses = collect();
+        $ventas_ultimos_6_meses = collect();
 
-        // for ($i = 5; $i >= 0; $i--) {
+        for ($i = 5; $i >= 0; $i--) {
 
-        //     $inicio = Carbon::now()->subMonths($i)->startOfMonth();
-        //     $fin    = Carbon::now()->subMonths($i)->endOfMonth();
+            $inicio = Carbon::now()->subMonths($i)->startOfMonth();
+            $fin    = Carbon::now()->subMonths($i)->endOfMonth();
 
-        //     $total = Venta::whereBetween('ven_fecha_venta', [$inicio, $fin])
-        //         ->selectRaw('SUM(CAST(ven_total AS NUMERIC)) as total')
-        //         ->value('total');
+            $total = Venta::whereBetween('ven_fecha_venta', [$inicio, $fin])
+                ->selectRaw('SUM(CAST(ven_total AS NUMERIC)) as total')
+                ->value('total');
     
-        //     $ventas_ultimos_6_meses->push([
-        //         'anio' => $inicio->year,
-        //         'mes_num' => $inicio->month,
-        //         'mes' => $inicio->locale('es')->monthName,
-        //         'total_ventas' => $total
-        //     ]);
-        // }
+            $ventas_ultimos_6_meses->push([
+                'anio' => $inicio->year,
+                'mes_num' => $inicio->month,
+                'mes' => $inicio->locale('es')->monthName,
+                'total_ventas' => $total
+            ]);
+        }
         //version mysql
-    $ventas_ultimos_6_meses = Venta::selectRaw('
-            YEAR(ven_fecha_venta) as anio,
-            MONTH(ven_fecha_venta) as mes_num,
-            SUM(ven_total) as total_ventas
-        ')
-        ->whereBetween('ven_fecha_venta', [
-            Carbon::now()->subMonths(5)->startOfMonth(),
-            Carbon::now()->endOfMonth()
-        ])
-        ->groupByRaw('YEAR(ven_fecha_venta), MONTH(ven_fecha_venta)')
-        ->orderByRaw('YEAR(ven_fecha_venta) ASC, MONTH(ven_fecha_venta) ASC')
-        ->get()
-        ->map(function ($item) {
-            $item->mes = Carbon::create()
-                ->month($item->mes_num)
-                ->locale('es')
-                ->monthName;
-            return $item;
-        });
+    // $ventas_ultimos_6_meses = Venta::selectRaw('
+    //         YEAR(ven_fecha_venta) as anio,
+    //         MONTH(ven_fecha_venta) as mes_num,
+    //         SUM(ven_total) as total_ventas
+    //     ')
+    //     ->whereBetween('ven_fecha_venta', [
+    //         Carbon::now()->subMonths(5)->startOfMonth(),
+    //         Carbon::now()->endOfMonth()
+    //     ])
+    //     ->groupByRaw('YEAR(ven_fecha_venta), MONTH(ven_fecha_venta)')
+    //     ->orderByRaw('YEAR(ven_fecha_venta) ASC, MONTH(ven_fecha_venta) ASC')
+    //     ->get()
+    //     ->map(function ($item) {
+    //         $item->mes = Carbon::create()
+    //             ->month($item->mes_num)
+    //             ->locale('es')
+    //             ->monthName;
+    //         return $item;
+    //     });
 
         //ventas ultimos 7 dias (muestra el nombre del dia y el total de ventas)
         //version postgresql
-        // $rawData = Venta::whereBetween('ven_fecha_venta', [
-        //         Carbon::now()->subDays(6)->startOfDay(),
-        //         Carbon::now()->endOfDay()
-        //     ])
-        //     ->selectRaw("
-        //         DATE(ven_fecha_venta) as fecha,
-        //         SUM(CAST(ven_total AS NUMERIC)) as total_ventas
-        //     ")
-        //     ->groupByRaw('DATE(ven_fecha_venta)')
-        //     ->orderBy('fecha')
-        //     ->get()
-        //     ->keyBy('fecha');
-
-        // $ventas_ultimos_7_dias = collect();
-
-        // for ($i = 6; $i >= 0; $i--) {
-        //     $fecha = Carbon::now()->subDays($i)->format('Y-m-d');
-
-        //     $ventas_ultimos_7_dias->push([
-        //         'fecha' => $fecha,
-        //         'dia' => Carbon::parse($fecha)->locale('es')->dayName,
-        //         'total_ventas' => $rawData[$fecha]->total_ventas ?? 0
-        //     ]);
-        // }
-        //version mysql
-        $ventas_ultimos_7_dias = Venta::selectRaw('
-                DATE(ven_fecha_venta) as fecha,
-                SUM(ven_total) as total_ventas
-            ')
-            ->whereBetween('ven_fecha_venta', [
+        $rawData = Venta::whereBetween('ven_fecha_venta', [
                 Carbon::now()->subDays(6)->startOfDay(),
                 Carbon::now()->endOfDay()
             ])
+            ->selectRaw("
+                DATE(ven_fecha_venta) as fecha,
+                SUM(CAST(ven_total AS NUMERIC)) as total_ventas
+            ")
             ->groupByRaw('DATE(ven_fecha_venta)')
             ->orderBy('fecha')
             ->get()
-            ->map(function ($item) {
-                $item->dia = Carbon::parse($item->fecha)
-                    ->locale('es')
-                    ->dayName;
-                return $item;
-            });            
+            ->keyBy('fecha');
+
+        $ventas_ultimos_7_dias = collect();
+
+        for ($i = 6; $i >= 0; $i--) {
+            $fecha = Carbon::now()->subDays($i)->format('Y-m-d');
+
+            $ventas_ultimos_7_dias->push([
+                'fecha' => $fecha,
+                'dia' => Carbon::parse($fecha)->locale('es')->dayName,
+                'total_ventas' => $rawData[$fecha]->total_ventas ?? 0
+            ]);
+        }
+        //version mysql
+        // $ventas_ultimos_7_dias = Venta::selectRaw('
+        //         DATE(ven_fecha_venta) as fecha,
+        //         SUM(ven_total) as total_ventas
+        //     ')
+        //     ->whereBetween('ven_fecha_venta', [
+        //         Carbon::now()->subDays(6)->startOfDay(),
+        //         Carbon::now()->endOfDay()
+        //     ])
+        //     ->groupByRaw('DATE(ven_fecha_venta)')
+        //     ->orderBy('fecha')
+        //     ->get()
+        //     ->map(function ($item) {
+        //         $item->dia = Carbon::parse($item->fecha)
+        //             ->locale('es')
+        //             ->dayName;
+        //         return $item;
+        //     });            
 
         //obtener los entradas de inventario_log de los ultimos 6 meses
         //version postgres
-        // $entradas_ultimos_6_meses = collect();
+        $entradas_ultimos_6_meses = collect();
 
-        // for ($i = 5; $i >= 0; $i--) {
+        for ($i = 5; $i >= 0; $i--) {
 
-        //     $inicio = Carbon::now()->subMonths($i)->startOfMonth();
-        //     $fin    = Carbon::now()->subMonths($i)->endOfMonth();
+            $inicio = Carbon::now()->subMonths($i)->startOfMonth();
+            $fin    = Carbon::now()->subMonths($i)->endOfMonth();
 
-        //     $total = InventarioLog::where('ilo_tipo_movimiento', 'entrada')
-        //         ->whereBetween('created_at', [$inicio, $fin])
-        //         ->count(); // o ->sum('ilo_cantidad') si quieres cantidades reales
+            $total = InventarioLog::where('ilo_tipo_movimiento', 'entrada')
+                ->whereBetween('created_at', [$inicio, $fin])
+                ->count(); // o ->sum('ilo_cantidad') si quieres cantidades reales
 
-        //     $entradas_ultimos_6_meses->push([
-        //         'anio' => $inicio->year,
-        //         'mes_num' => $inicio->month,
-        //         'mes' => $inicio->locale('es')->monthName,
-        //         'total_entradas' => $total
-        //     ]);
-        // }
+            $entradas_ultimos_6_meses->push([
+                'anio' => $inicio->year,
+                'mes_num' => $inicio->month,
+                'mes' => $inicio->locale('es')->monthName,
+                'total_entradas' => $total
+            ]);
+        }
         //version mysql
-        $entradas_ultimos_6_meses = InventarioLog::selectRaw('
-                YEAR(created_at) as anio,
-                MONTH(created_at) as mes_num,
-                COUNT(*) as total_entradas
-            ')
-            ->where('ilo_tipo_movimiento', 'entrada')
-            ->whereBetween('created_at', [
-                Carbon::now()->subMonths(5)->startOfMonth(),
-                Carbon::now()->endOfMonth()
-            ])
-            ->groupByRaw('YEAR(created_at), MONTH(created_at)')
-            ->orderByRaw('YEAR(created_at) ASC, MONTH(created_at) ASC')
-            ->get()
-            ->map(function ($item) {
-                $item->mes = Carbon::create()
-                    ->month($item->mes_num)
-                    ->locale('es')
-                    ->monthName;
-                return $item;
-            });
+        // $entradas_ultimos_6_meses = InventarioLog::selectRaw('
+        //         YEAR(created_at) as anio,
+        //         MONTH(created_at) as mes_num,
+        //         COUNT(*) as total_entradas
+        //     ')
+        //     ->where('ilo_tipo_movimiento', 'entrada')
+        //     ->whereBetween('created_at', [
+        //         Carbon::now()->subMonths(5)->startOfMonth(),
+        //         Carbon::now()->endOfMonth()
+        //     ])
+        //     ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+        //     ->orderByRaw('YEAR(created_at) ASC, MONTH(created_at) ASC')
+        //     ->get()
+        //     ->map(function ($item) {
+        //         $item->mes = Carbon::create()
+        //             ->month($item->mes_num)
+        //             ->locale('es')
+        //             ->monthName;
+        //         return $item;
+        //     });
 
 
         //obtener las salidas de inventario_log de los ultimos 6 meses
         //version postgresql
-        // $salidas_ultimos_6_meses = collect();
+        $salidas_ultimos_6_meses = collect();
 
-        // for ($i = 5; $i >= 0; $i--) {
+        for ($i = 5; $i >= 0; $i--) {
 
-        //     $inicio = Carbon::now()->subMonths($i)->startOfMonth();
-        //     $fin    = Carbon::now()->subMonths($i)->endOfMonth();
+            $inicio = Carbon::now()->subMonths($i)->startOfMonth();
+            $fin    = Carbon::now()->subMonths($i)->endOfMonth();
 
-        //     $total = InventarioLog::where('ilo_tipo_movimiento', 'salida')
-        //         ->whereBetween('created_at', [$inicio, $fin])
-        //         ->count(); // o ->sum('ilo_cantidad') si quieres cantidades reales
+            $total = InventarioLog::where('ilo_tipo_movimiento', 'salida')
+                ->whereBetween('created_at', [$inicio, $fin])
+                ->count(); // o ->sum('ilo_cantidad') si quieres cantidades reales
 
-        //     $salidas_ultimos_6_meses->push([
-        //         'anio' => $inicio->year,
-        //         'mes_num' => $inicio->month,
-        //         'mes' => $inicio->locale('es')->monthName,
-        //         'total_salidas' => $total
-        //     ]);
-        // }        
+            $salidas_ultimos_6_meses->push([
+                'anio' => $inicio->year,
+                'mes_num' => $inicio->month,
+                'mes' => $inicio->locale('es')->monthName,
+                'total_salidas' => $total
+            ]);
+        }        
         //version mysql
-        $salidas_ultimos_6_meses = InventarioLog::selectRaw('
-                YEAR(created_at) as anio,
-                MONTH(created_at) as mes_num,
-                COUNT(*) as total_salidas
-            ')
-            ->where('ilo_tipo_movimiento', 'salida')
-            ->whereBetween('created_at', [
-                Carbon::now()->subMonths(5)->startOfMonth(),
-                Carbon::now()->endOfMonth()
-            ])
-            ->groupByRaw('YEAR(created_at), MONTH(created_at)')
-            ->orderByRaw('YEAR(created_at) ASC, MONTH(created_at) ASC')
-            ->get()
-            ->map(function ($item) {
-                $item->mes = Carbon::create()
-                    ->month($item->mes_num)
-                    ->locale('es')
-                    ->monthName;
-                return $item;
-            });
-
+        // $salidas_ultimos_6_meses = InventarioLog::selectRaw('
+        //         YEAR(created_at) as anio,
+        //         MONTH(created_at) as mes_num,
+        //         COUNT(*) as total_salidas
+        //     ')
+        //     ->where('ilo_tipo_movimiento', 'salida')
+        //     ->whereBetween('created_at', [
+        //         Carbon::now()->subMonths(5)->startOfMonth(),
+        //         Carbon::now()->endOfMonth()
+        //     ])
+        //     ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+        //     ->orderByRaw('YEAR(created_at) ASC, MONTH(created_at) ASC')
+        //     ->get()
+        //     ->map(function ($item) {
+        //         $item->mes = Carbon::create()
+        //             ->month($item->mes_num)
+        //             ->locale('es')
+        //             ->monthName;
+        //         return $item;
+        //     });
 
         return view('dashboard.detalle_tablero', [
                                                     'usuario'=>$usuario, 

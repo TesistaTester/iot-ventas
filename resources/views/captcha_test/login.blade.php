@@ -10,7 +10,7 @@
 <h2>Recaptcha Test</h2>
 </div>
 <div class="card-body">
-<form name="g-v3-recaptcha-contact-us" id="g-v3-recaptcha-contact-us" method="post" action="{{url('vgr')}}">
+<form name="g-v3-recaptcha-contact-us" id="g-v3-recaptcha-contact-us" method="post" action="{{secure_url('vgr')}}">
     @csrf
     <div class="form-group">
     <label for="exampleInputEmail1">Description</label>

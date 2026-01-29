@@ -40,18 +40,18 @@
                                             <div id="box-loader" class="box-scanner">
                                                 ESPERANDO ESCANEO RFID ...
                                                 <br><br>
-                                                <img src="{{ asset('img/preloader3.gif') }}" alt="">
+                                                <img src="{{ secure_asset('img/preloader3.gif') }}" alt="">
                                             </div>
                                             <hr>
                                             <div id="box-form">
-                                                <form action="{{url('/inventario/guardar_seguir/') }}" method="post" style="display:inline;">
+                                                <form action="{{secure_url('/inventario/guardar_seguir/') }}" method="post" style="display:inline;">
                                                     @csrf
                                                     <input type="hidden" name="pro_id" value="{{ $nuevo_item->pro_id }}">
                                                     <input type="hidden" name="ptr_id" value="{{ $nuevo_item->ptr_id }}">
                                                     <button type="submit" class="btn btn-sm btn-primary">Guardar y registrar más items</button>
                                                 </form>
                                                 <br><br>
-                                                <form action="{{url('/inventario/guardar_terminar/') }}" method="post" style="display:inline;">
+                                                <form action="{{secure_url('/inventario/guardar_terminar/') }}" method="post" style="display:inline;">
                                                     @csrf
                                                     <input type="hidden" name="pro_id" value="{{ $nuevo_item->pro_id }}">
                                                     <input type="hidden" name="ptr_id" value="{{ $nuevo_item->ptr_id }}">
@@ -93,8 +93,8 @@ $(function(){
     * CONFIGURACION DATA TABLES
     -------------------------------------------------------------
     */
-    $('.tabla-datos-clientes').DataTable({"language":{url: '{{asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "asc" ]]});
-    $('.tabla-datos-log').DataTable({"language":{url: '{{asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
+    $('.tabla-datos-clientes').DataTable({"language":{url: '{{secure_asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "asc" ]]});
+    $('.tabla-datos-log').DataTable({"language":{url: '{{secure_asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
 
     //Conf popover
     $('[data-toggle="popover"]').popover()
@@ -169,7 +169,7 @@ $(function(){
     // pero no actualiza la pagina, solo muestra una alerta
     //ademas se para cuando se encuentra un tag asignado
     const intervaloConsulta = setInterval(function() {
-        fetch('{{ url('/api/inventario/existe_tag_asignado') }}')
+        fetch('{{ secure_url('/api/inventario/existe_tag_asignado') }}')
             .then(response => response.json())
             .then(data => {
                 if (data.status === '1') {

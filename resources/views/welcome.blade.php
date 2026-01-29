@@ -63,7 +63,7 @@
                                     <form>
                                         <div class="alert alert-info">
                                             <div class="media">
-                                                <img src=" {{asset('img/alert-info.png')}}" class="align-self-center mr-3" alt="...">
+                                                <img src=" {{secure_asset('img/alert-info.png')}}" class="align-self-center mr-3" alt="...">
                                                 <div class="media-body">
                                                     <h5 class="mt-0">Nota.-</h5>
                                                     <p>

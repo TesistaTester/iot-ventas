@@ -8,7 +8,7 @@
         <i class="fa fa-line-chart"></i>
         {{$titulo}}
         <a href="#" id="btn-imprimir" class="btn btn-sm btn-primary float-right" style="margin-left:10px;"><i class="fa fa-print"></i> IMPRIMIR</a>
-        <a href="{{url('reportes/')}}" class="btn btn-sm btn-secondary float-right" style="margin-left:10px;"><i class="fa fa-arrow-left"></i> ATRAS</a>
+        <a href="{{secure_url('reportes/')}}" class="btn btn-sm btn-secondary float-right" style="margin-left:10px;"><i class="fa fa-arrow-left"></i> ATRAS</a>
     </h3>
     <div class="row">
         <div class="col-12">              
@@ -18,7 +18,7 @@
                         @if($inventario->count() == 0)
                         <div class="alert alert-info">
                             <div class="media">
-                                <img src="{{asset('img/alert-info.png')}}" class="align-self-center mr-3" alt="...">
+                                <img src="{{secure_asset('img/alert-info.png')}}" class="align-self-center mr-3" alt="...">
                                 <div class="media-body">
                                     <h5 class="mt-0">Nota.-</h5>
                                     <p>
@@ -110,7 +110,7 @@
             </div>
             <div class="alert alert-danger">
                 <div class="media">
-                    <img src="{{asset('img/alert-danger.png')}}" class="align-self-center mr-3" alt="...">
+                    <img src="{{secure_asset('img/alert-danger.png')}}" class="align-self-center mr-3" alt="...">
                     <div class="media-body">
                         <h5 class="mt-0">Cuidado.-</h5>
                         <p>
@@ -122,7 +122,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
-          <form id="form-eliminar-venta" action="{{url('ventas')}}" data-simple-action="{{url('ventas')}}" method="post">
+          <form id="form-eliminar-venta" action="{{secure_url('ventas')}}" data-simple-action="{{secure_url('ventas')}}" method="post">
             @method('delete')
             @csrf
                 <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Si, eliminar</button>
@@ -141,7 +141,7 @@ $(function(){
     * CONFIGURACION DATA TABLES
     -------------------------------------------------------------
     */
-    $('.tabla-datos').DataTable({"language":{url: '{{asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
+    $('.tabla-datos').DataTable({"language":{url: '{{secure_asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
 
     //Conf popover
     $('[data-toggle="popover"]').popover()

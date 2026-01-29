@@ -7,7 +7,7 @@
 		<h3 class="title-header" style="text-transform: uppercase;">
 			<i class="fa fa-plus"></i>
 			{{$titulo}}
-			<a href="{{url('proveedores')}}" title="Volver a lista de proveedores" data-placement="bottom" class="btn btn-sm btn-secondary float-right" style="margin-left:10px;"><i class="fa fa-angle-double-left"></i> ATRÁS</a>
+			<a href="{{secure_url('proveedores')}}" title="Volver a lista de proveedores" data-placement="bottom" class="btn btn-sm btn-secondary float-right" style="margin-left:10px;"><i class="fa fa-angle-double-left"></i> ATRÁS</a>
 		</h3>
 
 		<div class="row">
@@ -17,7 +17,7 @@
 					<div class="row no-gutters">
 						<div class="col-md-12">
 							<div class="card-body">
-								<form id="form-nuevo-proveedor" action="{{url('proveedores')}}" method="POST">
+								<form id="form-nuevo-proveedor" action="{{secure_url('proveedores')}}" method="POST">
 								  @csrf
 								  <section id="seccion-datos-proveedor">
 									<h4 class="card-title"><strong><span class="text-primary">

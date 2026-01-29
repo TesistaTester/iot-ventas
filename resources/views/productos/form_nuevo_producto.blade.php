@@ -7,7 +7,7 @@
 		<h3 class="title-header" style="text-transform: uppercase;">
 			<i class="fa fa-plus"></i>
 			{{$titulo}}
-			<a href="{{url('productos')}}" title="Volver a lista de productos" data-placement="bottom" class="btn btn-sm btn-secondary float-right" style="margin-left:10px;"><i class="fa fa-angle-double-left"></i> ATRÁS</a>
+			<a href="{{secure_url('productos')}}" title="Volver a lista de productos" data-placement="bottom" class="btn btn-sm btn-secondary float-right" style="margin-left:10px;"><i class="fa fa-angle-double-left"></i> ATRÁS</a>
 		</h3>
 
 		<div class="row">
@@ -17,7 +17,7 @@
 					<div class="row no-gutters">
 						<div class="col-md-12">
 							<div class="card-body">
-								<form id="form-nuevo-producto" action="{{url('productos')}}" method="POST">
+								<form id="form-nuevo-producto" action="{{secure_url('productos')}}" method="POST">
 								  @csrf
 								  <section id="seccion-datos-cuenta-modulo-lectura">
 									<h4 class="card-title"><strong><span class="text-primary">
