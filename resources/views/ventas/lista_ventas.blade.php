@@ -28,6 +28,7 @@
                             </div>
                         </div>
                         @else
+                        <div class="table-responsive">
                         <table class="table table-bordered tabla-datos-clientes">
                             <thead>
                             <tr>
@@ -90,6 +91,7 @@
                             @endforeach
                             </tbody>
                         </table>
+                        </div>
                         @endif
                     </div>
                 </div>

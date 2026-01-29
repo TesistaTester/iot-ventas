@@ -16,6 +16,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-10 offset-md-1">
+                        <div class="table-responsive">
                         <table class="table table-bordered tabla-datos-clientes">
                             <tbody>
                                 <tr>
@@ -64,7 +65,7 @@
                                 </tr>
                             </tbody>
                         </table>
-
+                        </div>
                             </div>
                         </div>
                     </div>
