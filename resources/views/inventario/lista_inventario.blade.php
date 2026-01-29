@@ -4,12 +4,22 @@
 @section('contenido')
 
 <div class="col-md-10 content-pane">
-    <h3 class="title-header" style="text-transform: uppercase;">
-        <i class="fa fa-th-list"></i>
-        {{$titulo}}
-        <a href="{{ url('inventario/lectura_qr') }}" style="margin-left:5px;" class="btn btn-sm btn-secondary float-right"><i class="fa fa-qrcode"></i> Ingreso/salida QR (manual)</a>
-        <a href="#" class="btn btn-sm btn-dark float-right" data-toggle="modal" data-target="#modal-log-inventario" ><i class="fa fa-eye"></i> Ver log de inventario</a>
-    </h3>
+    <div class="title-container">
+        <div class="row">
+            <div class="col-6">
+				<h3 class="title-header" style="text-transform: uppercase;">
+					<i class="fa fa-list"></i>
+					{{$titulo}}
+				</h3>
+			</div>
+            <div class="col-6">
+                <a href="{{ url('inventario/lectura_qr') }}" style="margin-left:5px;" class="btn btn-sm btn-secondary float-right"><i class="fa fa-qrcode"></i> Ingreso/salida QR (manual)</a>
+                <a href="#" class="btn btn-sm btn-dark float-right" data-toggle="modal" data-target="#modal-log-inventario" ><i class="fa fa-eye"></i> Ver log de inventario</a>
+			</div>
+		</div>
+	</div>		
+
+    
     <div class="row">
         <div class="col-12">              
                 <!-- inicio card  -->

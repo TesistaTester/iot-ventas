@@ -4,11 +4,20 @@
 @section('contenido')
 
 <div class="col-md-10 content-pane">
-    <h3 class="title-header" style="text-transform: uppercase;">
-        <i class="fa fa-th"></i>
-        {{$titulo}}
-        <a href="{{secure_url('productos/nuevo')}}" class="btn btn-sm btn-success float-right" style="margin-left:10px;"><i class="fa fa-plus"></i> NUEVO producto</a>
-    </h3>
+    <div class="title-container">
+        <div class="row">
+            <div class="col-6">
+				<h3 class="title-header" style="text-transform: uppercase;">
+					<i class="fa fa-th"></i>
+					{{$titulo}}
+				</h3>
+			</div>
+            <div class="col-6">
+                <a href="{{secure_url('productos/nuevo')}}" class="btn btn-sm btn-success float-right" style="margin-left:10px;"><i class="fa fa-plus"></i> NUEVO producto</a>
+			</div>
+		</div>
+	</div>		
+
     <div class="row">
         <div class="col-12">              
                 <!-- inicio card  -->
