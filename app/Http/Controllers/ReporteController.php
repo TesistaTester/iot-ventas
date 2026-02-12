@@ -81,7 +81,7 @@ class ReporteController extends Controller
                 EXTRACT(YEAR FROM ven_fecha_venta) as anio,
                 EXTRACT(MONTH FROM ven_fecha_venta) as mes_num,
                 COUNT(*) as cantidad_compras,
-                SUM(ven_total) as total_ventas
+                SUM(ven_total::numeric) as total_ventas
             ')
             ->groupByRaw('
                 EXTRACT(YEAR FROM ven_fecha_venta),
