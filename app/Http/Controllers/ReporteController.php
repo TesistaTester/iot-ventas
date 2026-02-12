@@ -39,34 +39,74 @@ class ReporteController extends Controller
                                                          ]);
     }   
 
-    //reporte de ventas mensual
+    // //reporte de ventas mensual (VERSION MYSQL)
+    // public function ventasMensual()
+    // {
+    //     //verificar si esta logueado el usuario
+    //     if(!Auth::check()){return redirect('/');}
+    //     //obtener las ventas agrupadas por mes
+    //     $ventas = Venta::selectRaw('
+    //             YEAR(ven_fecha_venta) as anio,
+    //             MONTH(ven_fecha_venta) as mes_num,
+    //             COUNT(*) as cantidad_compras,
+    //             SUM(ven_total) as total_ventas
+    //         ')
+    //         ->groupByRaw('YEAR(ven_fecha_venta), MONTH(ven_fecha_venta)')
+    //         ->orderByRaw('YEAR(ven_fecha_venta) ASC, MONTH(ven_fecha_venta) ASC')
+    //         ->get()
+    //         ->map(function ($item) {
+    //             $item->mes = Carbon::create()
+    //                 ->month($item->mes_num)
+    //                 ->locale('es')
+    //                 ->monthName;
+    //             return $item;
+    //         });
+
+    //     return view('reportes.reporte_ventas_mensual', ['titulo'=>'Reporte de Ventas Mensuales',
+    //                                                       'modulo_activo' => $this->modulo,
+    //                                                       'ventas' => $ventas
+    //                                                      ]);
+    // }
+
+    // reporte de ventas mensual (VERSION POSTGRESQL)
     public function ventasMensual()
     {
-        //verificar si esta logueado el usuario
-        if(!Auth::check()){return redirect('/');}
-        //obtener las ventas agrupadas por mes
+        // verificar si esta logueado el usuario
+        if (!Auth::check()) {
+            return redirect('/');
+        }
+
+        // obtener las ventas agrupadas por mes
         $ventas = Venta::selectRaw('
-                YEAR(ven_fecha_venta) as anio,
-                MONTH(ven_fecha_venta) as mes_num,
+                EXTRACT(YEAR FROM ven_fecha_venta) as anio,
+                EXTRACT(MONTH FROM ven_fecha_venta) as mes_num,
                 COUNT(*) as cantidad_compras,
                 SUM(ven_total) as total_ventas
             ')
-            ->groupByRaw('YEAR(ven_fecha_venta), MONTH(ven_fecha_venta)')
-            ->orderByRaw('YEAR(ven_fecha_venta) ASC, MONTH(ven_fecha_venta) ASC')
+            ->groupByRaw('
+                EXTRACT(YEAR FROM ven_fecha_venta),
+                EXTRACT(MONTH FROM ven_fecha_venta)
+            ')
+            ->orderByRaw('
+                EXTRACT(YEAR FROM ven_fecha_venta) ASC,
+                EXTRACT(MONTH FROM ven_fecha_venta) ASC
+            ')
             ->get()
             ->map(function ($item) {
                 $item->mes = Carbon::create()
-                    ->month($item->mes_num)
+                    ->month((int)$item->mes_num)
                     ->locale('es')
                     ->monthName;
+
                 return $item;
             });
 
-        return view('reportes.reporte_ventas_mensual', ['titulo'=>'Reporte de Ventas Mensuales',
-                                                          'modulo_activo' => $this->modulo,
-                                                          'ventas' => $ventas
-                                                         ]);
-    }
+        return view('reportes.reporte_ventas_mensual', [
+            'titulo' => 'Reporte de Ventas Mensuales',
+            'modulo_activo' => $this->modulo,
+            'ventas' => $ventas
+        ]);
+    }    
 
     //stock critico
     public function stockCritico()
