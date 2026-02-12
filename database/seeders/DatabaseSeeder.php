@@ -17,12 +17,12 @@ class DatabaseSeeder extends Seeder
             RolSeeder::class,
             AdminSeeder::class,
             ProveedorSeeder::class,
-            ProductoSeeder::class,
-            InventarioSeeder::class,
+            // ProductoSeeder::class,
+            // InventarioSeeder::class,
             ClienteSeeder::class,
 //            VentaSeeder::class,
 //            DetalleVentaSeeder::class,
-            ProductoTagRfidSeeder::class,
+            // ProductoTagRfidSeeder::class,
         ]);
     }
 }
