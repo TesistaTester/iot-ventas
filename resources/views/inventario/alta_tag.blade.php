@@ -169,7 +169,7 @@ $(function(){
     // pero no actualiza la pagina, solo muestra una alerta
     //ademas se para cuando se encuentra un tag asignado
     const intervaloConsulta = setInterval(function() {
-        fetch('{{ secure_url('/api/inventario/existe_tag_asignado') }}')
+        fetch('{{ url('/api/inventario/existe_tag_asignado') }}')
             .then(response => response.json())
             .then(data => {
                 if (data.status === '1') {

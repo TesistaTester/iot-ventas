@@ -79,7 +79,7 @@ $(function(){
     //btn-finalizar redirige a inventarios
     $('#btn-finalizar').on('click', function(e){
         e.preventDefault();
-        window.location.href = "{{ url('inventario') }}";
+        window.location.href = "{{ secure_url('inventario') }}";
     });
 
     function onScanSuccess(decodedText, decodedResult) {
