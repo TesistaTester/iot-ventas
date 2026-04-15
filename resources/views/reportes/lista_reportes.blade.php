@@ -72,6 +72,17 @@
                                         <a class="btn btn-sm btn-primary" href="{{ url('reportes/stock_critico') }}"><i class="fa fa-file"></i> VER REPORTE</a>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <h4>
+                                            <i class="fa fa-bar-chart"></i>
+                                            Reporte: Estado de resultados (rentabilidad)
+                                        </h4>
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn btn-sm btn-primary" href="{{ url('reportes/rentabilidad') }}"><i class="fa fa-dollar-sign"></i> VER REPORTE</a>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                         </div>
