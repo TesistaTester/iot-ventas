@@ -13,7 +13,7 @@
 				</h3>
 			</div>
             <div class="col-6">
-                <a href="{{ url('inventario/lectura_qr') }}" style="margin-left:5px;" class="btn btn-sm btn-secondary float-right"><i class="fa fa-qrcode"></i> Ingreso/salida QR (manual)</a>
+                <a href="{{ secure_url('inventario/lectura_qr') }}" style="margin-left:5px;" class="btn btn-sm btn-secondary float-right"><i class="fa fa-qrcode"></i> Ingreso/salida QR (manual)</a>
                 <a href="#" class="btn btn-sm btn-dark float-right" data-toggle="modal" data-target="#modal-log-inventario" ><i class="fa fa-eye"></i> Ver log de inventario</a>
 			</div>
 		</div>

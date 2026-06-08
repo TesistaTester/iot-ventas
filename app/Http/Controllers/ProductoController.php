@@ -59,7 +59,8 @@ class ProductoController extends Controller
         $producto->pro_sku = $request->input('pro_sku');
         $producto->pro_descripcion = $request->input('pro_descripcion');
         $producto->pro_precio_venta = $request->input('pro_precio_venta');
-        $producto->pro_precio_compra = $request->input('pro_precio_venta'); 
+        $producto->pro_precio_compra = $request->input('pro_precio_compra'); //CORREGIDO
+        //$producto->pro_precio_compra = $request->input('pro_precio_venta'); 
         $producto->pro_stock_minimo = $request->input('pro_stock_minimo'); 
         $producto->pro_estado = "activo"; //activo - ingreso
         $producto->save();

@@ -80,7 +80,7 @@
                                         </h4>
                                     </td>
                                     <td class="text-center">
-                                        <a class="btn btn-sm btn-primary" href="{{ url('reportes/rentabilidad') }}"><i class="fa fa-dollar-sign"></i> VER REPORTE</a>
+                                        <a class="btn btn-sm btn-primary" href="{{ url('reportes/rentabilidad') }}"><i class="fa fa-file"></i> VER REPORTE</a>
                                     </td>
                                 </tr>
                             </tbody>
