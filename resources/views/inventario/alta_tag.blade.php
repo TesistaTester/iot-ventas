@@ -168,8 +168,9 @@ $(function(){
     //este trozo de codigo consulta cada 3 segundos si hay un tag rfid asignado, 
     // pero no actualiza la pagina, solo muestra una alerta
     //ademas se para cuando se encuentra un tag asignado
+    //ajuste 
     const intervaloConsulta = setInterval(function() {
-        fetch('{{ url('/api/inventario/existe_tag_asignado') }}')
+        fetch('{{ secure_url('/api/inventario/existe_tag_asignado') }}')
             .then(response => response.json())
             .then(data => {
                 if (data.status === '1') {
