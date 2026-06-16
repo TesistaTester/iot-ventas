@@ -87,7 +87,8 @@ $(function(){
         $('#qr-result').val(decodedText);   
 
         $.ajax({
-            url: "{{ url('/api/inventario/lectura_almacen_qr') }}",
+            //ajuste secure
+            url: "{{ secure_url('/api/inventario/lectura_almacen_qr') }}",
             method: "POST",
             data: {
                 codigo: decodedText,
