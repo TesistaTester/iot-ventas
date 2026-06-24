@@ -3,12 +3,36 @@
 
 @section('contenido')
 
+<!-- ESTILOS AGREGADOS -->
+<style>
+.bajo {
+    background-color: #e74c3c !important;
+    color: white;
+    font-weight: bold;
+}
+
+.minimo {
+    background-color: #2ecc71 !important;
+    color: white;
+    font-weight: bold;
+}
+
+.maximo {
+    background-color: #3498db !important;
+    color: white;
+    font-weight: bold;
+}
+
+   
+    
+</style>
+
 <div class="col-md-10 content-pane">
     <h3 class="title-header" style="text-transform: uppercase;">
         <i class="fa fa-line-chart"></i>
         {{$titulo}}
         <a href="#" id="btn-imprimir" class="btn btn-sm btn-primary float-right" style="margin-left:10px;"><i class="fa fa-print"></i> IMPRIMIR</a>
-        <a href="{{secure_url('reportes/')}}" class="btn btn-sm btn-secondary float-right" style="margin-left:10px;"><i class="fa fa-arrow-left"></i> ATRAS</a>
+        <a href="{{secure_secure_url('reportes/')}}" class="btn btn-sm btn-secondary float-right" style="margin-left:10px;"><i class="fa fa-arrow-left"></i> ATRAS</a>
     </h3>
     <div class="row">
         <div class="col-12">              
@@ -43,11 +67,65 @@
                                 <th>PRECIO COMPRA</th>
                                 <th>STOCK</th>
                                 <th>STOCK CRITICO</th>
+                                <th>ESTADO</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($inventario as $item)
-                            @if($item->inv_cantidad <= $item->producto->pro_stock_minimo)
+                            <!-- logica de colores se añade -->
+                              @php
+                                // ======================================
+                                // COLOR STOCK ACTUAL
+                                // ======================================
+
+                                $stockActual = $item->inv_cantidad;
+
+                                if ($stockActual <= 5) {
+                                    $classStock = "bajo";
+
+                                } elseif ($stockActual <= 10) {
+                                    $classStock = "minimo";
+
+                                } else {
+                                    $classStock = "maximo";
+                                }
+
+                                // ======================================
+                                // COLOR STOCK CRITICO
+                                // ======================================
+                                $stockCritico = $item->producto->pro_stock_minimo;
+                                if ($stockCritico <= 10) {
+                                    $classCritico = "bajo";
+
+                                } elseif ($stockCritico <= 50) {
+                                    $classCritico = "minimo";
+
+                                } else {
+                                    $classCritico = "maximo";
+                                }
+
+                                // ======================================
+                                // ESTADO DEL PRODUCTO
+                                // ======================================
+
+                                if ($stockActual == 0) {
+                                    $estado = "Agotado";
+                                    $classEstado = "bajo"; // rojo
+                                }
+                                elseif ($stockActual <= $stockCritico) {
+                                    $estado = "Crítico";
+                                    $classEstado = "minimo"; // verde actualmente
+                                }
+                                else {
+                                    $estado = "Normal";
+                                    $classEstado = "maximo"; // azul actualmente
+                                }
+
+
+
+                            @endphp
+                               
+                            {{--@if($item->inv_cantidad <= $item->producto->pro_stock_minimo)--}}
                             <tr>
                                 <td class="text-center">
                                     {{$item->producto->pro_id}}
@@ -64,14 +142,26 @@
                                 <td class="text-center">
                                     {{$item->producto->pro_precio_compra}}
                                 </td>
+
+                                <td class="text-center {{ $classStock }}">
+                                    {{$item->inv_cantidad}}
+                                </td>
+
+                                <td class="text-center {{ $classCritico }}">
+                                    {{$item->producto->pro_stock_minimo}}
+                                </td>
+                                <td class="text-center {{ $classEstado }}">
+                                    {{$estado}}
+                                </td>
+                                <!-- 
                                 <td class="text-center">
                                     {{$item->inv_cantidad}}
                                 </td>
                                 <td class="text-center">
                                     {{$item->producto->pro_stock_minimo}}
-                                </td>
+                                </td>-->
                             </tr>
-                            @endif
+                            {{--@endif--}}
                             @endforeach
                             </tbody>
                         </table>
@@ -122,7 +212,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
-          <form id="form-eliminar-venta" action="{{secure_url('ventas')}}" data-simple-action="{{secure_url('ventas')}}" method="post">
+          <form id="form-eliminar-venta" action="{{secure_secure_url('ventas')}}" data-simple-action="{{secure_secure_url('ventas')}}" method="post">
             @method('delete')
             @csrf
                 <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Si, eliminar</button>
@@ -172,7 +262,6 @@ $(function(){
 
 
 </script>
-
 
 
 

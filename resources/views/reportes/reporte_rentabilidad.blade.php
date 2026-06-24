@@ -3,6 +3,7 @@
 
 @section('contenido')
 
+
 <div class="col-md-10 content-pane">
     <h3 class="title-header" style="text-transform: uppercase;">
         <i class="fa fa-line-chart"></i>
@@ -10,11 +11,13 @@
         <a href="#" id="btn-imprimir" class="btn btn-sm btn-primary float-right" style="margin-left:10px;"><i class="fa fa-print"></i> IMPRIMIR</a>
         <a href="{{secure_url('reportes/')}}" class="btn btn-sm btn-secondary float-right" style="margin-left:10px;"><i class="fa fa-arrow-left"></i> ATRAS</a>
     </h3>
+    
     <div class="row">
         <div class="col-12">              
                 <!-- inicio card  -->
                 <div class="card card-stat">
                     <div class="card-body">
+                        
                         @if($reporte->count() == 0)
                         <div class="alert alert-info">
                             <div class="media">
@@ -36,8 +39,8 @@
                         <!--  RESUMEN FINANCIERO -->
                     <div class="row text-center mb-3">
 
-                        <div class="col-md-3">
-                            <div class="card bg-success text-white">
+                        <!--<div class="col-md-3">
+                            <div class="card bg-success text-white card-resumen">
                                 <div class="card-body">
                                     <h6>INGRESOS</h6>
                                     <h4>{{ number_format($total_ingresos,2) }}</h4>
@@ -46,33 +49,34 @@
                         </div>
 
                         <div class="col-md-3">
-                            <div class="card bg-danger text-white">
+                            <div class="card bg-danger text-white card-resumen">
                                 <div class="card-body">
                                     <h6>COSTOS</h6>
                                     <h4>{{ number_format($total_costos,2) }}</h4>
                                 </div>
                             </div>
-                        </div>
+                        </div> 
 
                         <div class="col-md-3">
-                            <div class="card bg-primary text-white">
+                            <div class="card bg-primary text-white card-resumen">
                                 <div class="card-body">
                                     <h6>UTILIDAD</h6>
                                     <h4>{{ number_format($total_utilidad,2) }}</h4>
                                 </div>
                             </div>
-                        </div>
+                        </div>--> 
 
                         <div class="col-md-3">
-                            <div class="card bg-dark text-white">
+                            <div class="card bg-white text-black card-resumen">
                                 <div class="card-body">
                                     <h6>MARGEN</h6>
-                                    <h4>{{ number_format($margen_utilidad,2) }}%</h4>
+                                    <h4>{{ number_format($margen_utilidad ?? 0, 2) }}%</h4>
                                 </div>
                             </div>
-                        </div>
+                        </div> 
 
-                    </div>
+                     </div>
+                        
                          <table class="table table-bordered tabla-datos">
                             <thead>
                             <tr>
@@ -119,28 +123,18 @@
                             @foreach($reporte as $item)
                             <tr>
                                 <td class="text-center">{{ $item->pro_nombre }}</td>
-                                <td class="text-center">{{ $item->pro_precio_compra }}</td>
-                                <td class="text-center">{{ $item->pro_precio_venta }}</td>
-                                <td class="text-center">{{ $item->total_comprado ?? 0 }}</td>
-                                <td class="text-center">{{ $item->total_vendido ?? 0 }}</td>
+                                <td class="text-center">{{ number_format($item->pro_precio_compra ?? 0, 2)}}</td>
+                                <td class="text-center">{{ number_format($item->pro_precio_venta ?? 0, 2)}}</td>
+                                <td class="text-center">{{ number_format($item->total_comprado ?? 0, 0) }}</td>
+                                <td class="text-center">{{ number_format($item->total_vendido ?? 0, 0) }}</td>
 
                                 <!--FORMATO NUMÉRICO -->
-                                <td class="text-right">{{ number_format($item->ingresos,2) }}</td>
-                                <td class="text-right">{{ number_format($item->costo_ventas,2) }}</td>
-                                <td class="text-right">{{ number_format($item->utilidad,2) }}</td>
+                                <td class="text-right">{{ number_format($item->ingresos ?? 0, 2) }}</td>
+                                <td class="text-right">{{ number_format($item->costo_ventas ?? 0, 2) }}</td>
+                                <td class="text-right utilidad-col">{{ number_format($item->utilidad ?? 0, 2) }}</td>
                             </tr>
                             @endforeach 
-                            
-                            <!-- TOTAL CORREGIDO -->
-                        <tr style="font-weight:bold; background:#e9ecef;">
-                            <td colspan="3" class="text-center">TOTAL</td>
-                            <td class="text-center">{{ $total_comprado }}</td>
-                            <td class="text-center">{{ $total_vendido }}</td>
-                            <td class="text-right text-success">{{ number_format($total_ingresos,2) }}</td>
-                            <td class="text-right text-danger">{{ number_format($total_costos,2) }}</td>
-                            <td class="text-right text-primary">{{ number_format($total_utilidad,2) }}</td>
-                        </tr>
-
+                    
                             <!-- TOTAL GENERAL PROFESIONAL 
                         <tr style="font-weight:bold; background:#e9ecef;">
                             <td class="text-center">TOTAL</td>
@@ -160,13 +154,27 @@
                                 <td>{{ number_format($total_utilidad, 2) }}</td>
                             </tr> -->
                             </tbody>
+                            <tfoot>     
+                                <!-- TOTAL CORREGIDO -->
+                                <tr style="font-weight:bold; background:#e9ecef;">
+                                    <td colspan="3" class="text-center">TOTAL</td>
+                                    <td class="text-center">{{ number_format($total_comprado ?? 0, 0)}}</td>
+                                    <td class="text-center">{{ number_format($total_vendido ?? 0, 0)}}</td>
+                                    <td class="text-right text-success">{{ number_format($total_ingresos ?? 0, 2) }} </td>
+                                    <td class="text-right text-danger">{{ number_format($total_costos ?? 0, 2) }} </td>
+                                    <td class="text-right text-primary">{{ number_format($total_utilidad ?? 0, 2) }} </td>
+                                </tr>
+                            </tfoot>
                         </table>
                         @endif
-                    </div>
                 </div>
-                <!-- fin card  -->
+
+            </div>
+            <!-- fin card  -->        
         </div>
+
     </div>
+
 </div>
 
 
@@ -218,19 +226,26 @@
 
 <script type="text/javascript">
 $(function(){
+    
     /*
     -------------------------------------------------------------
     * CONFIGURACION DATA TABLES
     -------------------------------------------------------------
     */
-    $('.tabla-datos').DataTable({"language":{url: '{{secure_asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
+  
 
-    //Conf popover
+    $('.tabla-datos').DataTable({"language": { url: "{{secure_asset('js/datatables-lang-es.json') }}" }, "order": [[ 7, "desc" ]], columnDefs: [ { targets: '.utilidad-col', type: 'num' } ]});
+
+    //Conf popove
     $('[data-toggle="popover"]').popover()
 
     //boton para imprimir
     $('#btn-imprimir').on('click', function () {
+        // destruir DataTable temporalmente
+    //$('.tabla-datos').DataTable().destroy();
         window.print();
+        // recargar para restaurar DataTable
+    //location.reload();
     });
 
     /*
@@ -238,15 +253,16 @@ $(function(){
     ELIMINAR venta
     --------------------------------------------------------------
     */
-    $('.btn-eliminar-venta').click(function(){
+   /*
+   $('.btn-eliminar-venta').click(function(){
        let usu_id = $(this).attr('data-usu-id');
        let usu_nombre = $(this).attr('data-usu-nombre');
        $('#txt-usu-nombre').html(usu_nombre);
        //form data
-       action = $('#form-eliminar-venta').attr('data-simple-action');
+       let action = $('#form-eliminar-venta').attr('data-simple-action');
        action = action+'/'+usu_id;
        $('#form-eliminar-venta').attr('action',action);
-   });
+   });*/
 
 
 
@@ -254,7 +270,35 @@ $(function(){
 
 
 </script>
+<style>
 
+@media print {
+
+    @page {
+        margin: 10mm;
+    }
+
+    #btn-imprimir,
+    .dataTables_length,
+    .dataTables_filter,
+    .dataTables_info,
+    .dataTables_paginate {
+        display: none !important;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+}
+        
+	
+</style>
 
 
 
