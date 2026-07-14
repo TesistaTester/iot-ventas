@@ -143,34 +143,131 @@ class InventarioController extends Controller
     }
 
 
-    public function lectura_almacen(Request $request){
-        $uid = $request->input('uid');
-        $evento = $request->input('evento');
-        //obtenemos el tag con uid capturado
-        $tag = ProductoTagRFID::where('ptr_uid', $request->uid)->first();
-        //obtenemos el producto cuyo tag corresponde
-        $producto = Producto::find($tag->pro_id);
-        //registramos el movimiento en inventarioLog
+    public function lectura_almacen(Request $request)
+{
+    $uid = $request->input('uid');
+    $evento = $request->input('evento');
+
+    // Buscar el tag RFID
+    $tag = ProductoTagRFID::where('ptr_uid', $uid)->first();
+
+    if (!$tag) {
+        return response()->json([
+            'status' => 0,
+            'mensaje' => 'La tarjeta RFID no está registrada.'
+        ]);
+    }
+
+    // Buscar el producto
+    $producto = Producto::find($tag->pro_id);
+
+    if (!$producto) {
+        return response()->json([
+            'status' => 0,
+            'mensaje' => 'Producto no encontrado.'
+        ]);
+    }
+
+    // Buscar inventario
+    $inventario = Inventario::where('pro_id', $producto->pro_id)->first();
+
+    if (!$inventario) {
+        return response()->json([
+            'status' => 0,
+            'mensaje' => 'Inventario no encontrado.'
+        ]);
+    }
+
+    /*
+    ==========================================
+    VALIDACIÓN DE ENTRADA
+    ==========================================
+    */
+
+    if ($evento == "entrada") {
+
+        if ($tag->ptr_en_almacen == 1) {
+
+            return response()->json([
+                'status' => 0,
+                'mensaje' => 'Este producto ya se encuentra en el almacén.'
+            ]);
+
+        }
+
+        // Registrar movimiento
         $movimiento = new InventarioLog();
         $movimiento->pro_id = $producto->pro_id;
-        $movimiento->ilo_tipo_movimiento = $evento; // entrada/salida
-        $movimiento->ilo_cantidad = 1; // Una máquina por tag
-        $movimiento->ilo_fuente = 'iot';
-        $movimiento->ilo_descripcion = "Movimiento automático por RFID";
+        $movimiento->ilo_tipo_movimiento = "entrada";
+        $movimiento->ilo_cantidad = 1;
+        $movimiento->ilo_fuente = "iot";
+        $movimiento->ilo_descripcion = "Ingreso automático mediante RFID";
         $movimiento->save();
 
-        //Actualizamos inventario
-        $inventario = Inventario::where('pro_id', $producto->pro_id)->first();
-        if ($evento === 'entrada') {
-            $inventario->inv_cantidad += 1;
-        } else {
-            $inventario->inv_cantidad -= 1;
-        }
+        // Actualizar inventario
+        $inventario->inv_cantidad += 1;
         $inventario->save();
 
-        // return response()->json(array('status'=>'1', 'lecturas'=>'Saludo a esp32'));
-        return response('----> LECTURA PROCESASA DESDE LARAVEL Uid:'.$uid.' Evento: '.$evento);
+        // Marcar la tarjeta como dentro del almacén
+        $tag->ptr_en_almacen = 1;
+        $tag->save();
+
+        return response()->json([
+            'status' => 1,
+            'mensaje' => 'Ingreso registrado correctamente.'
+        ]);
     }
+
+    /*
+    ==========================================
+    VALIDACIÓN DE SALIDA
+    ==========================================
+    */
+
+    if ($evento == "salida") {
+
+        if ($tag->ptr_en_almacen == 0) {
+
+            return response()->json([
+                'status' => 0,
+                'mensaje' => 'Este producto ya fue retirado del almacén.'
+            ]);
+
+        }
+
+        // Registrar movimiento
+        $movimiento = new InventarioLog();
+        $movimiento->pro_id = $producto->pro_id;
+        $movimiento->ilo_tipo_movimiento = "salida";
+        $movimiento->ilo_cantidad = 1;
+        $movimiento->ilo_fuente = "iot";
+        $movimiento->ilo_descripcion = "Salida automática mediante RFID";
+        $movimiento->save();
+
+        // Actualizar inventario
+        $inventario->inv_cantidad -= 1;
+        $inventario->save();
+
+        // Marcar la tarjeta como fuera del almacén
+        $tag->ptr_en_almacen = 0;
+        $tag->save();
+
+        return response()->json([
+            'status' => 1,
+            'mensaje' => 'Salida registrada correctamente.'
+        ]);
+    }
+
+    return response()->json([
+        'status' => 0,
+        'mensaje' => 'Evento no válido.'
+    ]);
+
+
+
+        // return response()->json(array('status'=>'1', 'lecturas'=>'Saludo a esp32'));
+       return response('----> LECTURA PROCESASA DESDE LARAVEL Uid:'.$uid.' Evento: '.$evento);
+}
 
     public function lectura_almacen_qr(Request $request){
         $codigo = $request->input('codigo');
