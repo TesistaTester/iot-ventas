@@ -13,7 +13,7 @@
 				</h3>
 			</div>
             <div class="col-6">
-                <a href="{{secure_url('usuarios/nuevo')}}" class="btn btn-sm btn-success float-right" style="margin-left:10px;"><i class="fa fa-plus"></i> NUEVO USUARIO</a>
+                <a href="{{url('usuarios/nuevo')}}" class="btn btn-sm btn-success float-right" style="margin-left:10px;"><i class="fa fa-plus"></i> NUEVO USUARIO</a>
 			</div>
 		</div>
 	</div>		
@@ -27,7 +27,7 @@
                         @if($usuarios->count() == 0)
                         <div class="alert alert-info">
                             <div class="media">
-                                <img src="{{secure_asset('img/alert-info.png')}}" class="align-self-center mr-3" alt="...">
+                                <img src="{{asset('img/alert-info.png')}}" class="align-self-center mr-3" alt="...">
                                 <div class="media-body">
                                     <h5 class="mt-0">Nota.-</h5>
                                     <p>
@@ -80,7 +80,7 @@
                                         OPCION
                                       </button>
                                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="{{secure_url('usuarios/'.Crypt::encryptString($item->usu_id).'/editar')}}"><i class="fa fa-edit"></i> Editar</a>
+                                        <a class="dropdown-item" href="{{url('usuarios/'.Crypt::encryptString($item->usu_id).'/editar')}}"><i class="fa fa-edit"></i> Editar</a>
                                         @if($item->usu_id > 1)
                                         <a class="dropdown-item btn-eliminar-usuario" data-usu-id="{{Crypt::encryptString($item->usu_id)}}" data-usu-nombre="{{$item->usu_nombre}}" data-toggle="modal" data-target="#modal-eliminar-usuario" href="#"><i class="fa fa-trash"></i> Eliminar</a>
                                         @endif
@@ -126,7 +126,7 @@
             </div>
             <div class="alert alert-danger">
                 <div class="media">
-                    <img src="{{secure_asset('img/alert-danger.png')}}" class="align-self-center mr-3" alt="...">
+                    <img src="{{asset('img/alert-danger.png')}}" class="align-self-center mr-3" alt="...">
                     <div class="media-body">
                         <h5 class="mt-0">Cuidado.-</h5>
                         <p>
@@ -138,7 +138,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
-          <form id="form-eliminar-usuario" action="{{secure_url('usuarios')}}" data-simple-action="{{secure_url('usuarios')}}" method="post">
+          <form id="form-eliminar-usuario" action="{{url('usuarios')}}" data-simple-action="{{url('usuarios')}}" method="post">
             @method('delete')
             @csrf
                 <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Si, eliminar</button>
@@ -157,7 +157,7 @@ $(function(){
     * CONFIGURACION DATA TABLES
     -------------------------------------------------------------
     */
-    $('.tabla-datos-usuario').DataTable({"language":{url: '{{secure_asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
+    $('.tabla-datos-usuario').DataTable({"language":{url: '{{asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
 
     //Conf popover
     $('[data-toggle="popover"]').popover()

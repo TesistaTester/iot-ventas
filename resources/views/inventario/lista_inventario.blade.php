@@ -13,7 +13,7 @@
 				</h3>
 			</div>
             <div class="col-6">
-                <a href="{{ secure_url('inventario/lectura_qr') }}" style="margin-left:5px;" class="btn btn-sm btn-secondary float-right"><i class="fa fa-qrcode"></i> Ingreso/salida QR (manual)</a>
+                <a href="{{ url('inventario/lectura_qr') }}" style="margin-left:5px;" class="btn btn-sm btn-secondary float-right"><i class="fa fa-qrcode"></i> Ingreso/salida QR (manual)</a>
                 <a href="#" class="btn btn-sm btn-dark float-right" data-toggle="modal" data-target="#modal-log-inventario" ><i class="fa fa-eye"></i> Ver log de inventario</a>
 			</div>
 		</div>
@@ -28,7 +28,7 @@
                         @if($inventario->count() == 0)
                         <div class="alert alert-info">
                             <div class="media">
-                                <img src="{{secure_asset('img/alert-info.png')}}" class="align-self-center mr-3" alt="...">
+                                <img src="{{asset('img/alert-info.png')}}" class="align-self-center mr-3" alt="...">
                                 <div class="media-body">
                                     <h5 class="mt-0">Nota.-</h5>
                                     <p>
@@ -74,7 +74,7 @@
                                         OPCION
                                       </button>
                                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="{{secure_url('inventario/altas/'.$item->inv_id)}}"><i class="fa fa-plus"></i> Alta de item en inventario</a>
+                                        <a class="dropdown-item" href="{{url('inventario/altas/'.$item->inv_id)}}"><i class="fa fa-plus"></i> Alta de item en inventario</a>
                                       </div>
                                     </div>
                                 </td>
@@ -178,7 +178,7 @@
             </div>
             <div class="alert alert-danger">
                 <div class="media">
-                    <img src="{{secure_asset('img/alert-danger.png')}}" class="align-self-center mr-3" alt="...">
+                    <img src="{{asset('img/alert-danger.png')}}" class="align-self-center mr-3" alt="...">
                     <div class="media-body">
                         <h5 class="mt-0">Cuidado.-</h5>
                         <p>
@@ -190,7 +190,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
-          <form id="form-eliminar-proveedor" action="{{secure_url('proveedores')}}" data-simple-action="{{secure_url('proveedores')}}" method="post">
+          <form id="form-eliminar-proveedor" action="{{url('proveedores')}}" data-simple-action="{{url('proveedores')}}" method="post">
             @method('delete')
             @csrf
                 <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Si, eliminar</button>
@@ -208,8 +208,8 @@ $(function(){
     * CONFIGURACION DATA TABLES
     -------------------------------------------------------------
     */
-    $('.tabla-datos-clientes').DataTable({"language":{url: '{{secure_asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "asc" ]]});
-    $('.tabla-datos-log').DataTable({"language":{url: '{{secure_asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
+    $('.tabla-datos-clientes').DataTable({"language":{url: '{{asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "asc" ]]});
+    $('.tabla-datos-log').DataTable({"language":{url: '{{asset('js/datatables-lang-es.json')}}'}, "order": [[ 0, "desc" ]]});
 
     //Conf popover
     $('[data-toggle="popover"]').popover()
