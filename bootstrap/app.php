@@ -20,6 +20,18 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ]);
+
+        // Confía en el proxy de Cloud Run para que Laravel detecte
+        // correctamente que la petición original fue HTTPS
+        // (Cloud Run termina el SSL antes de llegar al contenedor).
+        $middleware->trustProxies(
+            at: '*',
+            headers: Request::HEADER_X_FORWARDED_FOR |
+                     Request::HEADER_X_FORWARDED_HOST |
+                     Request::HEADER_X_FORWARDED_PORT |
+                     Request::HEADER_X_FORWARDED_PROTO
+        );        
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
